@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Csi_homework_4</string>
+    <string name="first_monster">Cookie Monster 1</string>
+    <string name="second_monster">Cookie Monster 2</string>
+    <string name="eaten_progress_bar_description">Total cookies eaten so far</string>
+    <string name="start_over_button">Start over</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="total_time">120 sec</string>
+    <string name="grandma_oven">Grandma\'s Oven</string>
+    <string name="clock">Simulation clock</string>
+    <string name="donut_suffix_text">s</string>
+</resources>
