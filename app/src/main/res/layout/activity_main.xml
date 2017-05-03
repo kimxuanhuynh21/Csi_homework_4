@@ -187,7 +187,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/button2"
+                android:id="@+id/start_over_button"
                 android:layout_weight="1"
                 android:text="@string/start_over_button"
                 tools:ignore="ButtonStyle" />
@@ -195,7 +195,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/button"
+                android:id="@+id/cancel_button"
                 android:layout_weight="1"
                 android:text="@string/cancel_button"
                 tools:ignore="ButtonStyle" />

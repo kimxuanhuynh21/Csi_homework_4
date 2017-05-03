@@ -4,6 +4,8 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -13,6 +15,8 @@ import com.github.lzyzsd.circleprogress.DonutProgress;
 import org.w3c.dom.Text;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static android.R.attr.data;
 
@@ -29,17 +33,24 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar totalTimeLeftProgress;
     private DonutProgress bakingTimeProgress;
 
+    private Thread eatingThread;
+    private Thread bakingThread;
+    private Thread countDownThread;
+    private Timer newTimer = new Timer();
+
     private TextView timePassed;
     private TextView totalBakedCookiesTV;
     private TextView bakedCookiesLeftTV;
     private TextView firstMonsterEatenCookiesTV;
     private TextView secondMonsterEatenCookiesTV;
+    private Button cancelButton;
+    private Button startOverlButton;
 
     private int circularProgressStatus = 0;
     private int timePassedValue = 0;
 
     private int mInterval = 1000;
-    private int eatingSpeed = 7000;
+    private long eatingSpeed = 7000;
 
     private boolean turn = false;
 
@@ -69,10 +80,30 @@ public class MainActivity extends AppCompatActivity {
         timePassed = (TextView)findViewById(R.id.timePassed);
         firstMonsterEatenCookiesTV = (TextView)findViewById(R.id.first_monster_eaten_cookies);
         secondMonsterEatenCookiesTV = (TextView)findViewById(R.id.second_monster_eaten_cookies);
+        cancelButton = (Button)findViewById(R.id.cancel_button);
+        startOverlButton = (Button)findViewById(R.id.start_over_button);
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Stop all", Toast.LENGTH_SHORT).show();
+                stopAll();
+            }
+        });
+        startOverlButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext(), "Start over", Toast.LENGTH_SHORT).show();
+                startOver();
+            }
+        });
+
         totalTimeLeftProgress.setMax(GameDuration);
-        eatingProgress.run();
-        bakingProgress.run();
-        countDownProgress.run();
+
+        eatingThread = new Thread(eatingProgress);
+        bakingThread = new Thread(bakingProgress);
+        countDownThread = new Thread(countDownProgress);
+
     }
 
     Runnable eatingProgress = new Runnable() {
@@ -100,10 +131,10 @@ public class MainActivity extends AppCompatActivity {
             } finally {
                 // 100% guarantee that this always happens, even if
                 // your update method throws an exception
-                if(timePassedValue < GameDuration && firstMonsterEatenCookies != 100 && secondMonsterEatenCookies != 100)
-                {
-                    mHandler.postDelayed(eatingProgress, eatingSpeed);
-                }
+//                if(timePassedValue < GameDuration && firstMonsterEatenCookies != 100 && secondMonsterEatenCookies != 100)
+//                {
+//                    mHandler.postDelayed(eatingProgress, eatingSpeed);
+//                }
             }
         }
     };
@@ -185,5 +216,31 @@ public class MainActivity extends AppCompatActivity {
         }
         int value = circularProgressStatus;
         return value;
+    }
+
+    private void startOver() {
+//        eatingThread.start();
+        newTimer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+//                if(timePassedValue < GameDuration && firstMonsterEatenCookies != 100 && secondMonsterEatenCookies != 100)
+//                {
+                    eatingProgress.run();
+//                }
+            }
+        }, 0, eatingSpeed);
+        bakingThread.start();
+        countDownThread.start();
+    }
+
+    private void stopAll() {
+        newTimer.cancel();
+        eatingThread.interrupt();
+        bakingThread.interrupt();
+        countDownThread.interrupt();
+    }
+
+    private void reset() {
+
     }
 }
