@@ -132,7 +132,7 @@
                     android:text="TextView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:id="@+id/totalBakedCookies"
+                    android:id="@+id/total_cookies_in_jar"
                     android:layout_weight="1" />
 
                 <com.github.lzyzsd.circleprogress.DonutProgress
@@ -174,7 +174,7 @@
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:id="@+id/game_time"
+                    android:id="@+id/count_down_progress_bar"
                     android:layout_weight="1"/>
             </TableRow>
         </TableLayout>
